@@ -97,9 +97,9 @@ function nuGetBreadcrumb(bc){
 		var b		= bc;
 	}
 	
-	if(window.nuTimesSaved > 0){	
+//	if(window.nuTimesSaved > 0){	
 		window.nuTimesSaved 	= -1;
-	}
+//	}
 
 
 	
@@ -537,7 +537,7 @@ function nuBindCtrlEvents(){
 	$(document).keydown(function(e) {
 		
         if (e.ctrlKey && e.shiftKey) {
-			
+
 			window.nuNEW = 0;
 			
 			e.preventDefault();
@@ -569,6 +569,8 @@ function nuBindCtrlEvents(){
 					nuPopup(window.nuFORM.getCurrent().form_id, "-2");
 				} else if(e.keyCode == 70 && window.global_access) {				//-- f		Form Properties
 					nuPopup("nuform", window.nuFORM.getCurrent().form_id);
+				} else if(e.keyCode == 76 && window.global_access) {				//-- L		Change Login
+					nuPopup("nupassword", "5b6bb7108a75efc", "");
 				} else if(e.keyCode == 79 && window.global_access) {				//-- O		Object List
 					nuPopup("nuobject", "", window.nuFORM.getCurrent().form_id);
 				} else if(e.keyCode == 68 && window.global_access) {				//-- d		nuDebug Results
@@ -1906,11 +1908,12 @@ function nuDecendingSortNumberColumn(b, a) {
 }
 
 
-
-
-function nuEmbedObject(f, t){
+function nuEmbedObject(f, d, w, h){
     
 	if(f == ''){return;}
+
+	if(w === undefined){w = 300;}
+	if(h === undefined){h = 300;}
 	
 	var ob	= JSON.parse(f);
 	var ty	= ob.type;
@@ -1919,14 +1922,16 @@ function nuEmbedObject(f, t){
     
     x.setAttribute("type", ty);
     x.setAttribute("src", ur);
-    x.setAttribute("width", "300px");
-    x.setAttribute("height", "300px");
+    x.setAttribute("width", w + "px");
+    x.setAttribute("height", h + "px");
 
-    $('#' + t).html('');
-    document.getElementById(t).appendChild(x);
+    $('#' + d).html('');
+    document.getElementById(d).appendChild(x);
         
 }
 
 
+function nuStartDatabaseAdmin() {
 
-
+	window.open("nupmalogin.php?sessid="+window.nuSESSION);
+}

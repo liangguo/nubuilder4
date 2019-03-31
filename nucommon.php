@@ -1511,9 +1511,23 @@ function db_setup(){
 	
 }
 
-function nuTranslate($t){
 
-        $l      = nuGetJSONData('nuLanguage');
+
+function nuUserLanguage(){
+
+	$user_id	= nuHash()['USER_ID'];
+	$t 			= nuRunQuery('SELECT * FROM zzzzsys_user WHERE zzzzsys_user_id = ?', [$user_id]);
+	$r 			= db_fetch_object($t);
+	$l 			= $r->sus_language;
+
+	return $l;
+	
+}
+
+
+function nuTranslate($e){
+
+        $l      = nuUserLanguage();
         $s      = "
                         SELECT *
                         FROM zzzzsys_translate
@@ -1522,9 +1536,10 @@ function nuTranslate($t){
 
                 ";
 
-        $t      = nuRunQuery($s, [$l, $t]);
+        $t      = nuRunQuery($s, [$l, $e]);
+		$tr		= db_fetch_object($t)->trl_translation;
 
-        return db_fetch_object($t)->trl_translation;
+        return $tr == '' ? $e : $tr;
 
 }
 

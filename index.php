@@ -12,11 +12,14 @@
                 require_once('nuwordpresssetuplibs.php');
 		nuCheckWPUser();
         }
+
+	require_once('nusystemupdatelibs.php');
+	nuMigrateSQL();
 ?>
 <!DOCTYPE html>
 <html onclick="nuClick(event)">
 <head>
-<title>nuBuilder 4</title>
+<title><?php echo $nuConfigTitle;?></title>
 <meta http-equiv='Content-type' content='text/html;charset=UTF-8'>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <?php

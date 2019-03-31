@@ -38,4 +38,7 @@ nuAppendToSystemTables();
 nuSetCollation();
 print '<br><span style="font-family:Helvetica;font-style:italic;font-size:20px;font-weight:bold;padding:10px">You will need to log in again for the changes to take effect.</span><br>';
 
+nuMigrateSQL();
+
+
 ?>

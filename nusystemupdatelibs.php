@@ -274,6 +274,7 @@ function nuSystemList(){
 	return $t;
 }
 
+
 function nuSetCollation(){
 	
 	$tbls   = nuRunQuery("SHOW FULL Tables WHERE Table_type = 'BASE TABLE'");
@@ -285,9 +286,89 @@ function nuSetCollation(){
 	while($row = db_fetch_row($tbls)){
 
 		$tab 	= $row[0];
-		nuRunQuery("ALTER TABLE $tab ENGINE = MyISAM");
-		nuRunQuery("ALTER TABLE $tab DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
-		nuRunQuery("ALTER TABLE $tab CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci");
+		
+		if(substr($tab, 0, 8) == 'zzzzsys_'){
+			
+			nuRunQuery("ALTER TABLE $tab ENGINE = MyISAM");
+			nuRunQuery("ALTER TABLE $tab DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
+			nuRunQuery("ALTER TABLE $tab CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci");
+		
+		}
+		
 	}
+	
 }
+
+function nuMigrateSQL() {
+
+        $set    = "nuStartDatabaseAdmin();";
+	$where  = 'nu5bad6cb37966261';;
+        $values = array($set,$where);
+        $sql    = "UPDATE `zzzzsys_event` SET `sev_javascript` = ? WHERE `zzzzsys_event_id` = ? ";
+        nuRunQuery($sql, $values);
+
+	$set    = "<iframe id='sqlframe' src='nuselect.php' style='height:180px;width:700px'></iframe>";
+        $where  = 'nu5bad6cb359e7a1a';
+        $values = array($set,$where);
+        $sql    = "UPDATE `zzzzsys_object` SET `sob_html_code` = ? WHERE `zzzzsys_object_id` = ? ";
+        nuRunQuery($sql, $values);
+
+	$set    = 'window.open(\'nureportdesigner.php?tt=\' + $("#sre_zzzzsys_php_id").val() + \'&launch=\' + $("#sre_zzzzsys_form_id").val());';
+        $where  = 'nu5bad6cb3797b0a7';
+        $values = array($set,$where);
+        $sql    = "UPDATE `zzzzsys_event` SET `sev_javascript` = ? WHERE `zzzzsys_event_id` = ?";
+        nuRunQuery($sql, $values);
+
+        $set  = '$s  = "CREATE TABLE #TABLE_ID# SELECT zzzzsys_object_id AS theid FROM zzzzsys_object WHERE ";';
+        $set .= "\n";
+        $set .= '$w  = "1";';
+        $set .= "\n";
+        $set .= 'if ( $GLOBALS[\'nuSetup\']->set_denied == 1 )  { ';
+        $set .= "\n";
+        $set .= '$w  = "sob_all_zzzzsys_form_id NOT LIKE \'nu%\' OR sob_all_zzzzsys_form_id = \'nuuserhome\'"; ';
+        $set .= "\n";
+        $set .= '}';
+        $set .= "\n";
+        $set .= 'nuRunQuery("$s$w");';
+        $set .= "\n";
+        $where  = 'nuobject_BB';
+        $values = array($set,$where);
+        $sql    = "UPDATE `zzzzsys_php` SET `sph_php` = ? WHERE `zzzzsys_php_id` = ?";
+        nuRunQuery($sql, $values);
+
+        $set  = '$s  = "CREATE TABLE #TABLE_ID# SELECT zzzzsys_form_id AS theid FROM zzzzsys_form WHERE ";';
+        $set .= "\n";
+        $set .= '$w  = "1";';
+        $set .= "\n";
+        $set .= 'if ( $GLOBALS[\'nuSetup\']->set_denied == 1 )  { ';
+        $set .= "\n";
+        $set .= '$w  = "zzzzsys_form_id NOT LIKE \'nu%\' OR zzzzsys_form_id = \'nuuserhome\'"; ';
+        $set .= "\n";
+        $set .= '}';
+        $set .= "\n";
+        $set .= 'nuRunQuery("$s$w");';
+        $set .= "\n";
+        $where  = 'nuform_BB';
+        $values = array($set,$where);
+        $sql    = "UPDATE `zzzzsys_php` SET `sph_php` = ? WHERE `zzzzsys_php_id` = ?";
+        nuRunQuery($sql, $values);
+
+        $set  = '$s  = "CREATE TABLE #TABLE_ID# SELECT zzzzsys_form_id AS theid FROM zzzzsys_form WHERE ";';
+        $set .= "\n";
+        $set .= '$w  = "1";';
+        $set .= "\n";
+        $set .= 'if ( $GLOBALS[\'nuSetup\']->set_denied == 1 )  { ';
+        $set .= "\n";
+        $set .= '$w  = "zzzzsys_form_id NOT LIKE \'nu%\' OR zzzzsys_form_id = \'nuuserhome\'"; ';
+        $set .= "\n";
+        $set .= '}';
+        $set .= "\n";
+        $set .= 'nuRunQuery("$s$w");';
+        $set .= "\n";
+        $where  = 'nutablookup_BB';
+        $values = array($set,$where);
+        $sql    = "UPDATE `zzzzsys_php` SET `sph_php` = ? WHERE `zzzzsys_php_id` = ?";
+        nuRunQuery($sql, $values);
+}
+
 ?>

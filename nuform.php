@@ -80,7 +80,8 @@ function nuFormCode($f){
 	
 }
 
-function nuGetFormObject($F, $R, $OBJS, $P = stdClass){
+//function nuGetFormObject($F, $R, $OBJS, $P = new stdClass){
+function nuGetFormObject($F, $R, $OBJS){
 	
     $tabs 			= nuBuildTabList($F);
     $f				= nuGetEditForm($F, $R);
@@ -103,8 +104,9 @@ function nuGetFormObject($F, $R, $OBJS, $P = stdClass){
     SELECT * 
     FROM zzzzsys_form
     INNER JOIN zzzzsys_object ON sob_all_zzzzsys_form_id = zzzzsys_form_id
+    INNER JOIN zzzzsys_tab ON zzzzsys_tab_id = sob_all_zzzzsys_tab_id
     WHERE zzzzsys_form_id = ?
-    ORDER BY (sob_all_type = 'run'), sob_all_zzzzsys_tab_id, sob_all_order    
+    ORDER BY syt_order, (sob_all_type = 'run'), sob_all_zzzzsys_tab_id, sob_all_order    
 
     ";
 	
@@ -119,7 +121,7 @@ function nuGetFormObject($F, $R, $OBJS, $P = stdClass){
 			$o 						= nuDefaultObject($r, $tabs);
 			
 			if($r->sob_all_cloneable == '0'){
-				$cloneable[]		= array(subform => $r->sob_all_type == 'subform', id => $r->sob_all_id);
+				$cloneable[]		= array('subform' => $r->sob_all_type == 'subform', 'id' => $r->sob_all_id);
 			}
 			
 			if($R == '-1'){
@@ -859,8 +861,9 @@ function nuBrowseRows($f){
 	
 	$flds			= array();
 	$fields 		= array_slice($S->fields,1);
-	
-	if(count($_POST['nuSTATE']['nosearch_columns']) == 0){
+
+//	if(count($_POST['nuSTATE']['nosearch_columns']) == 0){
+	if($_POST['nuSTATE']['nosearch_columns'] === null){
 		$_POST['nuSTATE']['nosearch_columns']	= array();
 	}
 	
@@ -1462,13 +1465,10 @@ function nuPreloadImages($a){
 		$tr	= trim($r->sfi_code);
 		$js = $js . "\nnuImages['$tr'] = '" . addslashes($r->sfi_json) . "';";
 
-		nuAddJavascript($js);
-
 	}
 
-
-	
-	
+	nuAddJavascript($js);
+		
 }
 
 

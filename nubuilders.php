@@ -274,7 +274,7 @@ function nuBuildFastForm($table, $form_type){
 			
 			";
 			
-			$array      = Array(nuID(), $form_id, $lab, $id, 'left', '', ($i+1) * 10, 250);
+			$array      = Array(nuID(), $form_id, $lab, $id, 'l', '', ($i+1) * 10, 250);
 
 			nuRunQuery($sql, $array);
 			

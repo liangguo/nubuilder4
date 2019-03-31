@@ -2644,6 +2644,8 @@ function nuPopulateLookup(fm, target){
 			
 		}
 		
+		if(i == 1){$('#' + id).focus();}
+		
 	}
 	
 	nuCalculateForm();
